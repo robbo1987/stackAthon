@@ -1,6 +1,7 @@
 <template>
   <q-page class="q-pa-md"> 
         <q-list 
+        v-if="Object.keys(tasks).length"
         separator
         bordered >
       
@@ -25,7 +26,7 @@
     </div>
 
     <q-dialog v-model="showAddTask">
-      <add-task />
+      <add-task @close="showAddTask=false" />
     </q-dialog>
 
 

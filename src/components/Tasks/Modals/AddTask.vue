@@ -13,6 +13,7 @@
             outlined
             v-model="taskToSubmit.name"
             :rules="[(val) => !!val || 'Field is required']"
+            autofocus
             ref="name"
             label="Task name"
             class="col"
@@ -39,7 +40,9 @@
           </q-input>
         </div>
 
-        <div class="rov q-mb-sm">
+        <div 
+          v-if="taskToSubmit.dueDate"
+          class="rov q-mb-sm">
           <q-input outlined label="Due Time" v-model="taskToSubmit.dueTime">
             <template v-slot:append>
               <q-icon name="access_time" class="cursor-pointer">
@@ -95,6 +98,7 @@ export default {
     },
     submitTask() {
       this.addTask(this.taskToSubmit)
+      this.$emit('close')
     },
   },
 };

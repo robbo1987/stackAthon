@@ -3,7 +3,7 @@ import {uid} from "quasar"
 
 const state = {
   tasks: {
-    id1: {
+    /*id1: {
       name: "walk the dog",
       completed: false,
       dueDate: "5/22/2022",
@@ -22,7 +22,7 @@ const state = {
       completed: false,
       dueDate: "5/24/2022",
       dueTime: "12:30 AM",
-    },
+    },*/
   },
 };
 
