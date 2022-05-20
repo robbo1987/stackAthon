@@ -61,13 +61,18 @@
       </q-card-section>
 
       <q-card-actions align="right">
-        <q-btn flat label="Save" color="primary" type="submit" />
+        <q-btn 
+          label="Save" 
+          color="primary" 
+          type="submit" />
       </q-card-actions>
     </form>
   </q-card>
 </template>
 
 <script>
+
+import {mapActions} from "vuex"
 export default {
   data() {
     return {
@@ -81,6 +86,7 @@ export default {
   },
 
   methods: {
+    ...mapActions('tasks',['addTask']),
     submitForm() {
       this.$refs.name.validate();
       if (!this.$refs.name.hasError) {
@@ -88,7 +94,7 @@ export default {
       }
     },
     submitTask() {
-      console.log("submit task");
+      this.addTask(this.taskToSubmit)
     },
   },
 };
