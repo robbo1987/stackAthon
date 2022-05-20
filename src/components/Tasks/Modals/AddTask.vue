@@ -17,7 +17,16 @@
             ref="name"
             label="Task name"
             class="col"
-          />
+          >
+            <template v-slot:append>
+              <q-icon
+                v-if="taskToSubmit.name"
+                name="close"
+                @click="taskToSubmit.name = ''"
+                class="curson-pointer"
+              />
+            </template>
+          </q-input>
         </div>
 
         <div class="rov q-mb-sm">
@@ -36,15 +45,25 @@
                   </q-date>
                 </q-popup-proxy>
               </q-icon>
+              <q-icon
+                v-if="taskToSubmit.dueDate"
+                name="close"
+                @click="clearDueDate"
+                class="curson-pointer"
+              />
             </template>
           </q-input>
         </div>
 
-        <div 
-          v-if="taskToSubmit.dueDate"
+        <div v-if="taskToSubmit.dueDate" 
           class="rov q-mb-sm">
-          <q-input outlined label="Due Time" v-model="taskToSubmit.dueTime">
+          <q-input 
+            outlined 
+            label="Due Time" 
+            v-model="taskToSubmit.dueTime">
             <template v-slot:append>
+              
+            
               <q-icon name="access_time" class="cursor-pointer">
                 <q-popup-proxy
                   cover
@@ -53,29 +72,35 @@
                 >
                   <q-time v-model="taskToSubmit.dueTime">
                     <div class="row items-center justify-end">
-                      <q-btn v-close-popup label="Close" color="primary" flat />
+                      <q-btn 
+                        v-close-popup 
+                        label="Close" 
+                        color="primary" flat />
                     </div>
                   </q-time>
+                   
                 </q-popup-proxy>
               </q-icon>
+              <q-icon
+                    v-if="taskToSubmit.dueTime"
+                    name="close"
+                    @click="taskToSubmit.dueTime = ''"
+                    class="curson-pointer"
+                  />
             </template>
           </q-input>
-        </div>
+            </div>
       </q-card-section>
 
       <q-card-actions align="right">
-        <q-btn 
-          label="Save" 
-          color="primary" 
-          type="submit" />
+        <q-btn label="Save" color="primary" type="submit" />
       </q-card-actions>
     </form>
   </q-card>
 </template>
 
 <script>
-
-import {mapActions} from "vuex"
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -89,17 +114,22 @@ export default {
   },
 
   methods: {
-    ...mapActions('tasks',['addTask']),
+    ...mapActions("tasks", ["addTask"]),
     submitForm() {
       this.$refs.name.validate();
       if (!this.$refs.name.hasError) {
         this.submitTask();
       }
+      
     },
     submitTask() {
-      this.addTask(this.taskToSubmit)
-      this.$emit('close')
+      this.addTask(this.taskToSubmit);
+      this.$emit("close");
     },
+    clearDueDate(){
+      this.taskToSubmit.dueDate= ''
+      this.taskToSubmit.dueTime =''
+    }
   },
 };
 </script>
