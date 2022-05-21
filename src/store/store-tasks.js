@@ -24,7 +24,8 @@ const state = {
       dueTime: "12:30 AM",
     },
   },
-  search: ""
+  search: "",
+  sort:'name'
 };
 
 const mutations = {
@@ -41,8 +42,11 @@ const mutations = {
   setSearch(state,value) {
 
     state.search = value
-  }
+  },
+  setSort(state,value) {
 
+    state.sort = value
+  }
 };
 
 const actions = {
@@ -63,27 +67,52 @@ const actions = {
   },
   setSearch({commit}, value) {
     commit('setSearch',value)
+  },
+  setSort({commit}, value) {
+    commit('setSort',value)
   }
 };
 
 const getters = {
 
-  tasksFiltered: (state) => {
+  tasksSorted: (state) => {
+    let tasksSorted = {}
 
-    let tasksFiltered = {}
+    let keysOrdered = Object.keys(state.tasks)
+
+    keysOrdered.sort((a,b) => {
+
+      let aProp = state.tasks[a][state.sort].toLowerCase()
+      let bProp = state.tasks[b][state.sort].toLowerCase()
+
+      if(aProp > bProp) return 1
+      else if (aProp < bProp) return -1
+      else return 0
+
+    })
+
+    keysOrdered.forEach((key) =>
+    tasksSorted[key]=state.tasks[key])
+    return tasksSorted
+  } ,
+
+  tasksFiltered: (state, getters) => {
+
+    let tasksSorted = getters.tasksSorted,
+     tasksFiltered = {}
     if(state.search) {
-        Object.keys(state.tasks).forEach(function(key) {
-          let task = state.tasks[key],
+        Object.keys(tasksSorted).forEach(function(key) {
+          let task = tasksSorted[key],
           taskNameLowerCase = task.name.toLowerCase(),
           searchLowerCase = state.search.toLowerCase()
-          
+
           if(taskNameLowerCase.includes(searchLowerCase)) {
             tasksFiltered[key] = task
           }
         })
         return tasksFiltered
     }
-     return state.tasks 
+     return tasksSorted
   },
   tasksToDo: (state,getters) => {
     let tasksFiltered = getters.tasksFiltered

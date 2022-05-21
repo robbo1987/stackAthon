@@ -4,16 +4,20 @@
         <div class="row q-mb-lg">
 
         <search />
+        <sort />
 
         </div>
+        <p
+        v-if="search && !Object.keys(tasksToDo).length && !Object.keys(tasksCompleted).length"
+        >No Search Results </p>
 
         <no-tasks
-           v-if="!Object.keys(tasksToDo).length"
+           v-if="!Object.keys(tasksToDo).length && !search"
          >
         </no-tasks>
    
         <tasks-to-do
-        v-else
+        v-if="Object.keys(tasksToDo).length"
         :tasksToDo="tasksToDo"
         />
         <hr>
@@ -46,11 +50,12 @@
 
 <script>
 
-import {  mapGetters } from 'vuex'
+import {  mapGetters, mapState } from 'vuex'
 
 export default {
   computed: {
-    ...mapGetters('tasks', ['tasksToDo','tasksCompleted'])
+    ...mapGetters('tasks', ['tasksToDo','tasksCompleted']),
+    ...mapState('tasks', ['search'])
   } ,
   components: {
     
@@ -58,7 +63,8 @@ export default {
     'tasks-to-do': require('components/Tasks/Modals/TasksToDo.vue').default,
     'tasks-completed': require('components/Tasks/Modals/TasksCompleted.vue').default,
     'no-tasks': require('components/Tasks/Modals/NoTasks.vue').default,
-    'search': require('components/Tasks/Modals/Tools/Search.vue').default
+    'search': require('components/Tasks/Modals/Tools/Search.vue').default,
+    'sort': require('components/Tasks/Modals/Tools/Sort.vue').default
 
    
   },
