@@ -1,7 +1,14 @@
 <template>
+      <div>
+      <q-banner
+      dense 
+      inline-actions 
+      class="text-white bg-teal-4 text-center">
+      <span class="text-bold text-subtitle1">Completed Tasks</span>
+        </q-banner>
   
         <q-list 
-        v-if="Object.keys(tasksCompleted).length"
+        
         separator
         bordered >
       
@@ -13,8 +20,10 @@
         ></task>
      
         </q-list>
+        </div>
 
 </template>
+
 
 <script> 
 

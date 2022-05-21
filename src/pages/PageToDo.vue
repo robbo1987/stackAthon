@@ -1,13 +1,26 @@
 <template>
   <q-page class="q-pa-md"> 
+
+        <div class="row q-mb-lg">
+
+        <search />
+
+        </div>
+
+        <no-tasks
+           v-if="!Object.keys(tasksToDo).length"
+         >
+        </no-tasks>
    
         <tasks-to-do
+        v-else
         :tasksToDo="tasksToDo"
         />
         <hr>
 
         <tasks-completed
           :tasksCompleted="tasksCompleted"
+          v-if="Object.keys(tasksCompleted).length"
          />
 
 
@@ -32,9 +45,9 @@
 </template>
 
 <script>
-import TasksToDo from 'components/Tasks/Modals/TasksToDo.vue';
+
 import {  mapGetters } from 'vuex'
-import TasksCompleted from 'components/Tasks/Modals/TasksCompleted.vue';
+
 export default {
   computed: {
     ...mapGetters('tasks', ['tasksToDo','tasksCompleted'])
@@ -43,8 +56,17 @@ export default {
     
     'add-task': require('components/Tasks/Modals/AddTask.vue').default,
     'tasks-to-do': require('components/Tasks/Modals/TasksToDo.vue').default,
-    'tasks-completed': require('components/Tasks/Modals/TasksCompleted.vue').default
+    'tasks-completed': require('components/Tasks/Modals/TasksCompleted.vue').default,
+    'no-tasks': require('components/Tasks/Modals/NoTasks.vue').default,
+    'search': require('components/Tasks/Modals/Tools/Search.vue').default
+
    
+  },
+  mounted() {
+    this.$root.$on('showAddTask', () => {
+      this.showAddTask = true
+    })
+
   },
   data() {
     return{

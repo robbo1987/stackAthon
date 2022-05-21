@@ -1,7 +1,14 @@
 <template>
+    <div>
+      <q-banner
+      dense 
+      inline-actions 
+      class="text-white bg-red text-center">
+      <span class="text-bold text-subtitle1">TO DO</span>
+        </q-banner>
   
        <q-list 
-        v-if="Object.keys(tasksToDo).length"
+        
         separator
         bordered >
       
@@ -12,6 +19,7 @@
         :id="key"
         ></task>
         </q-list>
+        </div>
 
 </template>
 
