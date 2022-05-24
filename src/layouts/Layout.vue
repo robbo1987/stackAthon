@@ -4,6 +4,14 @@
       <q-toolbar>
 
         <q-toolbar-title class="absolute-center"> Robbys ToDo App </q-toolbar-title>
+        <q-btn
+          to="auth"
+          flat
+          color="secondary"
+          icon-right="account_circle"
+          label="login"
+          class="absolute-right"
+         />
       </q-toolbar>
     </q-header>
 
