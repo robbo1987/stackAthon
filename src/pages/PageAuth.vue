@@ -25,26 +25,40 @@
         <q-tab-panel name="register">
           <div class="text-h6">Register</div>
           Register here
-          <form>
-      <q-input 
-      outlined
-      v-model="formData.email"
-      label="Email"
-      stack-label
-      class='col'
-      />
-       <q-input 
-      outlined
-      v-model="formData.password"
-      label="Password"
-      type='password'
-      stack-label
-      class='col'
-      />
-      </form>
+          <form @submit.prevent="submitForm">
+            <q-input
+              outlined
+              v-model="formData.email"
+              label="Email"
+              stack-label
+              class="col"
+              :rules="[
+                (val) =>
+                  isValidEmailAddress(val) ||
+                  'Please enter valid email address',
+              ]"
+              lazy-rules=""
+            />
+            <q-input
+              outlined
+              v-model="formData.password"
+              :rules="[
+                (val) => val.length >= 6 || 'Please use 6 or more characters',
+              ]"
+              label="Password"
+              type="password"
+              stack-label
+              class="col"
+              lazy-rules=""
+            />
+
+            <div class="row">
+              <q-space />
+              <q-btn color="primary" label="Register" type="submit" />
+            </div>
+          </form>
         </q-tab-panel>
       </q-tab-panels>
-      
     </q-card>
   </q-page>
 </template>
@@ -55,10 +69,22 @@ export default {
     return {
       tab: "register",
       formData: {
-        email: '',
-        password:''
-      }
-    }
-  }
+        email: "",
+        password: "",
+      },
+    };
+  },
+  methods: {
+    submitForm() {
+      console.log("hello world");
+    },
+    isValidEmailAddress(email) {
+      return String(email)
+        .toLowerCase()
+        .match(
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        );
+    },
+  },
 };
 </script>
