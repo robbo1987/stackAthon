@@ -1,6 +1,6 @@
 <template>
   <q-page padding>
-    <q-card>
+    <q-card class="auth-tabs">
       <q-tabs
         v-model="tab"
         dense
@@ -20,11 +20,6 @@
         <q-tab-panel name="login">
           <div class="text-h6">Login</div>
           Login here
-        </q-tab-panel>
-
-        <q-tab-panel name="register">
-          <div class="text-h6">Register</div>
-          Register here
           <form @submit.prevent="submitForm">
             <q-input
               outlined
@@ -32,6 +27,7 @@
               label="Email"
               stack-label
               class="col"
+              ref="email"
               :rules="[
                 (val) =>
                   isValidEmailAddress(val) ||
@@ -47,6 +43,46 @@
               ]"
               label="Password"
               type="password"
+              ref="password"
+              stack-label
+              class="col"
+              lazy-rules=""
+            />
+
+            <div class="row">
+              <q-space />
+              <q-btn color="primary" label="Login" type="submit" />
+            </div>
+          </form>
+        </q-tab-panel>
+
+        <q-tab-panel name="register">
+          <div class="text-h6">Register</div>
+          Register here
+          <form @submit.prevent="submitForm">
+            <q-input
+              outlined
+              v-model="formData.email"
+              label="Email"
+              stack-label
+              class="col"
+              ref="email"
+              :rules="[
+                (val) =>
+                  isValidEmailAddress(val) ||
+                  'Please enter valid email address',
+              ]"
+              lazy-rules=""
+            />
+            <q-input
+              outlined
+              v-model="formData.password"
+              :rules="[
+                (val) => val.length >= 6 || 'Please use 6 or more characters',
+              ]"
+              label="Password"
+              type="password"
+              ref="password"
               stack-label
               class="col"
               lazy-rules=""
@@ -64,6 +100,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -75,8 +112,17 @@ export default {
     };
   },
   methods: {
+    ...mapActions("auth", ["registerUser",'loginUser']),
     submitForm() {
-      console.log("hello world");
+      this.$refs.email.validate();
+      this.$refs.password.validate();
+      if (!this.$refs.email.hasError && !this.$refs.password.hasError) {
+        if (this.tab === "login") {
+          this.loginUser(this.formData)
+        } else {
+          this.registerUser(this.formData);
+        }
+      }
     },
     isValidEmailAddress(email) {
       return String(email)
@@ -88,3 +134,9 @@ export default {
   },
 };
 </script>
+<style scoped>
+.auth-tabs {
+  max-width: 500px;
+  margin: 0 auto;
+}
+</style>
