@@ -104,7 +104,7 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      tab: "register",
+      tab: "login",
       formData: {
         email: "",
         password: "",

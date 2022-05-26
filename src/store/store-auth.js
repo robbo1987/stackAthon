@@ -1,13 +1,17 @@
-
+import { LocalStorage} from 'quasar'
 import { appAuth } from 'boot/toDoApp'
 const state = {
-  auth: {
+  loggedIn : false
 
   }
 
-}
+
 
 const mutations = {
+
+  setLoggedIn(state,value) {
+    state.loggedIn = value
+  }
 
 }
 
@@ -30,6 +34,28 @@ const actions = {
       console.log('error.message', error.message)
       })
 
+    },
+
+    logoutUser() {
+        appAuth.signOut()
+
+    },
+
+    handleAuthStateChange({commit}) {
+      appAuth.onAuthStateChanged((user) => {
+        if(user) {
+          commit('setLoggedIn',true)
+          LocalStorage.set('loggedIn', true)
+          this.$router.push('/').catch(err=> {})
+
+        }
+        else {
+          commit('setLoggedIn',false)
+          LocalStorage.set('loggedIn', false)
+          this.$router.replace('/auth').catch(err=>{})
+
+        }
+      })
     }
 
   }

@@ -5,11 +5,22 @@
 
         <q-toolbar-title class="absolute-center"> Robbys ToDo App </q-toolbar-title>
         <q-btn
+          v-if="!loggedIn"
           to="auth"
           flat
           color="secondary"
           icon-right="account_circle"
           label="login"
+          class="absolute-right"
+         />
+
+          <q-btn
+          @click="logoutUser"
+          v-if="loggedIn"
+          flat
+          color="secondary"
+          icon-right="account_circle"
+          label="logout"
           class="absolute-right"
          />
       </q-toolbar>
@@ -55,6 +66,8 @@
 </template>
 
 <script>
+
+import {mapState, mapActions} from "vuex"
 export default {
   name: "MainLayout",
   data() {
@@ -74,6 +87,13 @@ export default {
       ],
     };
   },
+
+  computed: {
+    ...mapState('auth',['loggedIn'])
+  },
+  methods: {
+    ...mapActions('auth',['logoutUser'])
+  }
 };
 </script>
 <style lang='scss'scoped>
